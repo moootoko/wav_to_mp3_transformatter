@@ -1,14 +1,35 @@
 # Overview
 
-This python script transforms wav to mp3 recursively.
+wavファイルをmp3ファイルに変換するスクリプトです。
 
-But the error case isn't examined...
+再帰的にディレクトリ指定することで、ファイルサーバ上に格納した音源を一括で変換することもできます。
 
 
-# Necessary module
+# 使用法（お試し）
+
+スクリプト内の(1), (2)について、場合に応じて変更する必要があります。
+
+(1)
+
+本スクリプトはRaspbianで作成したため、ディレクトリ名のデリミターが「/」になっています。Windowsで使用する場合は「\」（バックスラッシュ）を指定します。
+
+(2)
+
+wavファイル配置場所により、ディレクトリ名をスプリットしたリストの結合インデックスが変わります。
+
+例えば「/home/s-bakushino/Music/live/sprint/本能スピード.wav」を変換したい場合、splitの結果は「」（空文字）「home」「s-bakushino」「live」「sprint」「本能スピード.wav」のリストになります。
+
+この内からどこ以降をログに残したいかを数字で指定します。
+
+0を指定すればルートから（/home/...）記録されます。2を指定すれば「s-bakushino/」以降が記録されます。
+
+
+# 必要な追加ライブラリ
 
 - ffmpeg
 
 ```
 sudo apt install ffmpeg
 ```
+
+Windowsの場合はたぶん、ffmpegをダウンロードしてパスを通せばいいのかな...？
