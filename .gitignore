@@ -1,0 +1,7 @@
+# created by virtualenv automatically
+bin/
+lib/
+
+exec_org.py
+pyvenv.cfg
+log.txt
