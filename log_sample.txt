@@ -1,0 +1,7 @@
+[2021-08-01 01:43:41,496(5688)] <INFO> ## Start exec.py ##
+[2021-08-01 01:43:47,812(5691)] <INFO> Start transforming: AAA/aaa123.wav
+[2021-08-01 01:43:48,508(5692)] <INFO> Start transforming: AAA/bbb123.wav
+[2021-08-01 01:44:53,048(5691)] <INFO> Finish transforming: AAA/aaa123.wav -> AAA/aaa123.mp3
+[2021-08-01 01:44:54,543(5692)] <INFO> Finish transforming: AAA/bbb123.wav -> AAA/bbb123.mp3
+[2021-08-01 01:44:55,162(5688)] <INFO> Successfully completed.
+[2021-08-01 01:44:55,163(5688)] <INFO> ## End exec.py ##
