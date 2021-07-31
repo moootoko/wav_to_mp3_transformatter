@@ -30,8 +30,10 @@ def writelog(level, text):
 # wavからmp3へ変換
 def trans_wav_to_mp3(wavpath):
     mp3path = wavpath.replace('.wav', '.mp3')
-    wavname = '/'.join(wavpath.split('/')[6:])
-    mp3name = '/'.join(mp3path.split('/')[6:])
+    # (1) パス名のデリミターを適宜変更する
+    # (2) 変換元ファイル名に応じて、joinするインデックスを変える
+    wavname = '/'.join(wavpath.split('/')[0:])
+    mp3name = '/'.join(mp3path.split('/')[0:])
     sound = pydub.AudioSegment.from_wav(wavpath)
     result = True
 
