@@ -1,7 +1,7 @@
-# created by virtualenv automatically
 bin/
 lib/
+__pycache__/
 
-exec_org.py
 pyvenv.cfg
-log.txt
+.env
+*.log
