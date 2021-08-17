@@ -23,12 +23,13 @@ def trans_wav_to_mp3(wavpath):
         # ffmpegを直接使用して変換
         # 強制上書き, ログレベル:error
         subprocess.call(f'ffmpeg -i {wavpath} -y -loglevel error {mp3path}', shell=True)
-    except FileNotFoundError as fnfe:
-        writelog('ERROR', f'File not found. Please check the path.')
+    except OSError as er:
+        # OS例外(おもにFileNotFoundError)
+        writelog('ERROR', f'Failed to transform {wavname} : {er}')
         result = False
-    except Exception as e: 
+    except Exception as ex: 
         # 変換失敗
-        writelog('ERROR', f'Failed to transform {wavname} : {e}')
+        writelog('ERROR', f'Failed to transform {wavname} : {ex}')
         result = False
     else:
         # 変換成功
