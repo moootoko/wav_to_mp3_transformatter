@@ -22,14 +22,14 @@ def trans_wav_to_mp3(wavpath):
     try:
         # ffmpegを直接使用して変換
         # 強制上書き, ログレベル:error
-        subprocess.call(f'ffmpeg -i {wavpath} -y -loglevel error {mp3path}', shell=True)
-    except OSError as er:
+        o = subprocess.run(f'ffmpeg -i {wavpath} -y -loglevel error {mp3path}', shell=True, check=True, capture_output=True)
+    except subprocess.CalledProcessError as er:
         # OS例外(おもにFileNotFoundError)
-        writelog('ERROR', f'Failed to transform {wavname} : {er}')
+        writelog('ERROR', er.stderr.decode())
         result = False
     except Exception as ex: 
-        # 変換失敗
-        writelog('ERROR', f'Failed to transform {wavname} : {ex}')
+        # 組み込み例外(念の為)
+        writelog('ERROR', ex)
         result = False
     else:
         # 変換成功
