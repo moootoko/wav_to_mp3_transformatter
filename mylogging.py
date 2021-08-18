@@ -1,5 +1,10 @@
+import os
 import logging
 from datetime import datetime
+from dotenv import load_dotenv
+
+# 環境変数をロード
+load_dotenv()
 
 # ロガーインスタンス取得
 logger = logging.getLogger(__name__)
@@ -14,7 +19,7 @@ loglevel_funcs = {
 }
 
 # 出力レベルの下限を設定
-logger.setLevel('DEBUG')
+logger.setLevel(os.getenv('LOG_LEVEL'))
 
 # コンソール出力設定
 sh = logging.StreamHandler()
