@@ -17,30 +17,31 @@ def trans_wav_to_mp3(wavpath):
     size = os.path.getsize(wavpath)
     result = True
 
-    writelog('INFO', f'Start transforming: {wavname} ({size:,} Byte)')
+    writelog('INFO', f'Start: {wavname} ({size:,} Byte)')
 
     try:
         # ffmpegを直接使用して変換
         # 強制上書き, ログレベル:error
-        o = subprocess.run(f'ffmpeg -i {wavpath} -y -loglevel error {mp3path}', shell=True, check=True, capture_output=True)
+        o = subprocess.run(f'ffmpeg -i "{wavpath}" -y -loglevel error "{mp3path}"', shell=True, check=True, capture_output=True)
     except subprocess.CalledProcessError as er:
-        # OS例外(おもにFileNotFoundError)
-        writelog('ERROR', er.stderr.decode())
+        # プロセスの異常終了(おもに no such file or directory)
+        detail = er.stderr.decode()
+        writelog('ERROR', f'Failed: {wavname} ({detail})')
         result = False
     except Exception as ex: 
         # 組み込み例外(念の為)
-        writelog('ERROR', ex)
+        writelog('ERROR', f'Failed: {wavname} (ex)')
         result = False
     else:
         # 変換成功
-        writelog('INFO', f'Finish transforming: {wavname} -> {mp3name}')
+        writelog('INFO', f'Success: {wavname} -> {mp3name}')
     
     return { 'filename':wavpath, 'result':result }
 
 
 # ファイルを削除
 def delfile(file_list):
-    writelog('INFO', 'Remove transformed wav files...')
+    writelog('INFO', '-- Start removing wav files only which is successfully transformed --')
     writelog('DEBUG', file_list)
 
     for filepath in file_list:
@@ -52,6 +53,7 @@ def delfile(file_list):
         else:
             writelog('INFO', f'Removed {filename}')
 
+    writelog('INFO', '-- Finish removing --')
 
 
 # メイン
@@ -95,7 +97,7 @@ if __name__ == '__main__':
 
     # 変換開始
     s_transnum = 'all' if transnum == 0 else str(transnum)
-    writelog('INFO', f'Start transforming {s_transnum} files on {processnum} processes.')
+    writelog('INFO', f'-- Start transforming {s_transnum} files on {processnum} processes --')
     with multiprocessing.Pool(processnum) as p:
         result = p.map(trans_wav_to_mp3, wavpath_list)
 
@@ -103,11 +105,11 @@ if __name__ == '__main__':
     failed_list = [d.get('filename') for d in result if d.get('result')==False]
     failed_count = len(failed_list)
     if failed_count > 0:
-        writelog('WARNING', f'{failed_count} files couldn\'t be transformed.')
+        writelog('WARNING', f'-- {failed_count} files couldn\'t be transformed --')
         for fname in failed_list:
             writelog('WARNING', fname)
     else:
-        writelog('INFO', 'Successfully completed transforming.')
+        writelog('INFO', '-- Successfully transformed --')
 
     # 変換したwavファイルを削除（失敗したファイルは削除しない）
     success_list = [d.get('filename') for d in result if d.get('result')==True]
